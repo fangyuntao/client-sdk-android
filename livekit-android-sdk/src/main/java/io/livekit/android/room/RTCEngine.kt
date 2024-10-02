@@ -776,6 +776,7 @@ internal constructor(
         suspend fun onPostReconnect(isFullReconnect: Boolean)
         fun onLocalTrackUnpublished(trackUnpublished: LivekitRtc.TrackUnpublishedResponse)
         fun onTranscriptionReceived(transcription: LivekitModels.Transcription)
+        fun onLocalTrackSubscribed(trackSubscribed: LivekitRtc.TrackSubscribed)
     }
 
     companion object {
@@ -909,6 +910,10 @@ internal constructor(
         cont.resume(response.track)
     }
 
+    override fun onLocalTrackSubscribed(trackSubscribed: LivekitRtc.TrackSubscribed) {
+        listener?.onLocalTrackSubscribed(trackSubscribed)
+    }
+
     override fun onParticipantUpdate(updates: List<LivekitModels.ParticipantInfo>) {
         listener?.onUpdateParticipants(updates)
     }
@@ -1023,6 +1028,20 @@ internal constructor(
                 listener?.onTranscriptionReceived(dp.transcription)
             }
 
+            LivekitModels.DataPacket.ValueCase.METRICS -> {
+                // TODO
+            }
+
+            LivekitModels.DataPacket.ValueCase.CHAT_MESSAGE -> {
+                // TODO
+            }
+
+            LivekitModels.DataPacket.ValueCase.RPC_REQUEST,
+            LivekitModels.DataPacket.ValueCase.RPC_ACK,
+            LivekitModels.DataPacket.ValueCase.RPC_RESPONSE,
+            -> {
+                // TODO
+            }
             LivekitModels.DataPacket.ValueCase.VALUE_NOT_SET,
             null,
             -> {
